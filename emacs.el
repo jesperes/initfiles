@@ -1,6 +1,10 @@
 ;;
-;; Restructured Emacs init file
+;; New Emacs file
 ;;
+;; Instructions:
+;;
+;; $ git clone git@github.com:jesperes/initfiles.git
+;; $ ln -s initfiles/emacs.el .emacs
 
 (cond
  ((eq window-system 'w32)
