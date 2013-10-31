@@ -51,7 +51,7 @@
 
 ;;
 ;; Clang completion-mode
-(load-library (expand-file-name "~/initfiles/elisp/clang-completion-mode"))
+;; (load-library (expand-file-name "~/initfiles/elisp/clang-completion-mode"))
 
 ;;
 ;; Use Flycheck wherever possible
