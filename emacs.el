@@ -32,9 +32,15 @@
 (global-set-key "\M-r" 'recompile)
 
 ;;
+;; Magit
+(add-hook 'magit-mode-hook 'magit-load-config-extensions)
+(add-hook 'magit-mode-hook 'turn-on-magit-svn)
+(require 'magit-find-file)
+(global-set-key (kbd "C-c p") 'magit-find-file-completing-read)
+
+;;
 ;; CMake
 (load (expand-file-name "~/initfiles/elisp/cmake-init.el"))
-(add-hook 'cmake-mode-hook 'common-source-file-hook)
 
 ;;
 ;; Clang auto-format
@@ -47,7 +53,6 @@
 	 (eq major-mode 'c++-mode) 
 	 (eq major-mode 'c-mode)) 
     (clang-format-buffer)))
-;; (add-hook 'before-save-hook 'clang-format-before-save)
 
 ;;
 ;; Clang completion-mode
