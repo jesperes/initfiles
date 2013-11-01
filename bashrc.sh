@@ -27,5 +27,9 @@ eval `gnome-keyring-daemon`
 
 #
 # Aliases
+if [ `uname -s` = Linux ]; then
+    alias git='eval `gnome-keyring-daemon` && git'
+    alias svn='eval `gnome-keyring-daemon` && svn'
+fi
 alias ls='ls -l --color=auto'
 alias sweep='find -name \*~ -exec rm -v {} \;'
