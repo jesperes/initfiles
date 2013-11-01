@@ -1,22 +1,29 @@
 ;;
-;; New Emacs file. Symlink from $HOME/.emacs.
+;; New Emacs file.
 ;;
 ;; Intended for use with Emacs 24.x.
 ;;
 
+;; Set up initfiles-dir to point to the location of this directory.
+(setq initfiles-dir (file-name-directory load-file-name))
+
+;;
+;; Use separate custom files for Windows and Linux.
 (cond
  ((eq window-system 'w32)
-  (setq custom-file 
-	(expand-file-name "~/initfiles/elisp/emacs-custom-win32.el")))
+  (setq custom-file (concat initfiles-dir "elisp/emacs-custom-win32.el")))
  (t
-  (setq custom-file 
-	(expand-file-name "~/initfiles/elisp/emacs-custom.el"))))
+  (setq custom-file (concat initfiles-dir "elisp/emacs-custom.el"))))
 
 (load custom-file)
 
+(add-to-list 'load-path (concat initfiles-dir "elisp"))
+
 (require 'package)
 (package-initialize)
-(add-to-list 'package-archives '("melpa" . "http://melpa.milkbox.net/packages/") t)
+(setq package-archives '(("gnu" . "http://elpa.gnu.org/packages/")
+                         ("marmalade" . "http://marmalade-repo.org/packages/")
+                         ("melpa" . "http://melpa.milkbox.net/packages/")))
 
 (setq x-select-enable-clipboard t)
 (setq x-select-enable-primary t)
@@ -40,11 +47,11 @@
 
 ;;
 ;; CMake
-(load (expand-file-name "~/initfiles/elisp/cmake-init.el"))
+(load "cmake-init.el")
 
 ;;
 ;; Clang auto-format
-(load (expand-file-name "~/initfiles/elisp/clang-format.el"))
+(load "clang-format.el")
 (global-set-key (kbd "C-c f") 'clang-format-buffer)
 
 (defun clang-format-before-save ()
@@ -56,7 +63,7 @@
 
 ;;
 ;; Clang completion-mode
-;; (load-library (expand-file-name "~/initfiles/elisp/clang-completion-mode"))
+;; (load-library (expand-file-name "$INITFILES/elisp/clang-completion-mode"))
 
 ;;
 ;; Use Flycheck wherever possible
