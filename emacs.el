@@ -19,6 +19,8 @@
 
 (add-to-list 'load-path (concat initfiles-dir "elisp"))
 
+; (message load-path)
+
 (require 'package)
 (package-initialize)
 (setq package-archives '(("gnu" . "http://elpa.gnu.org/packages/")
@@ -47,11 +49,11 @@
 
 ;;
 ;; CMake
-(load "cmake-init.el")
+(load "cmake-init")
 
 ;;
 ;; Clang auto-format
-(load "clang-format.el")
+(load "clang-format")
 (global-set-key (kbd "C-c f") 'clang-format-buffer)
 
 (defun clang-format-before-save ()
