@@ -19,18 +19,19 @@ fi
 
 #
 # Exported variables 
-export EMACS=emacs
+export EDITOR=emacs
 export SVN_EDITOR=$EDITOR
+export GIT_EDITOR=$EDITOR
 export WINEDEBUG=fixme-all
 export MAKEFLAGS=-j8
 eval `gnome-keyring-daemon`
 
 #
 # Aliases
-if [ `uname -s` = Linux ] && [ -f /usr/bin/gnome-keyring-daemon ]; then
-    alias git='eval `/usr/bin/gnome-keyring-daemon` && git'
-    alias svn='eval `/usr/bin/gnome-keyring-daemon` && svn'
-fi
+#if [ `uname -s` = Linux ] && [ -f /usr/bin/gnome-keyring-daemon ]; then
+    #alias git='eval `/usr/bin/gnome-keyring-daemon` && git'
+    #alias svn='eval `/usr/bin/gnome-keyring-daemon` && svn'
+#fi
 
 alias ls='ls -l --color=auto'
 alias sweep='find -name \*~ -exec rm -v {} \;'

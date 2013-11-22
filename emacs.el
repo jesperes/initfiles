@@ -5,7 +5,9 @@
 ;;
 
 ;; Set up initfiles-dir to point to the location of this directory.
-(setq initfiles-dir (file-name-directory load-file-name))
+;; (setq initfiles-dir (file-name-directory load-file-name))
+
+(setq initfiles-dir (expand-file-name "~/initfiles/"))
 
 ;;
 ;; Use separate custom files for Windows and Linux.
@@ -52,20 +54,35 @@
 (load "cmake-init")
 
 ;;
+;; Erlang
+(require 'erlang-start)
+
+;;
 ;; Clang auto-format
 (load "clang-format")
 (global-set-key (kbd "C-c f") 'clang-format-buffer)
 
 (defun clang-format-before-save ()
   (interactive)
-  (when (or 
+  (when (or
 	 (eq major-mode 'c++-mode) 
 	 (eq major-mode 'c-mode)) 
     (clang-format-buffer)))
 
+(defun enable-clang-completion-mode ()
+  (clang-completion-mode))
+
+;(add-hook 'c++-mode-hook 'enable-clang-completion-mode)
+;(add-hook 'c-mode-hook 'enable-clang-completion-mode)
+
+(add-to-list 'auto-mode-alist '("\\.h$" . c++-mode))
+(add-to-list 'auto-mode-alist '("\\.CPP$" . c++-mode))
+(add-to-list 'auto-mode-alist '("\\.H$" . c++-mode))
+(add-to-list 'auto-mode-alist '("\\.rc$" . c++-mode))
+
 ;;
 ;; Clang completion-mode
-;; (load-library (expand-file-name "$INITFILES/elisp/clang-completion-mode"))
+(load "clang-completion-mode")
 
 ;;
 ;; Use Flycheck wherever possible
