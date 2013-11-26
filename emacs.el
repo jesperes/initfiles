@@ -85,3 +85,8 @@
 ;; Show parenthesis
 (show-paren-mode 1)
 (setq show-paren-delay 0)
+
+;;
+;; DOS mode
+(load "dos")
+(add-to-list 'auto-mode-alist '("\\.bat" . dos-mode))

@@ -8,8 +8,10 @@
 shopt -s histappend
 shopt -s checkwinsize
 shopt -s cdspell
-shopt -s dirspell
-shopt -s globstar
+if [ $BASH_VERSINFO[0] == 4 ]; then
+    shopt -s dirspell
+    shopt -s globstar
+fi
 
 #
 # Put local customizations in $HOME/.bashrc_local, like local PATH settings.
@@ -23,7 +25,7 @@ export EMACS=emacs
 export SVN_EDITOR=$EDITOR
 export WINEDEBUG=fixme-all
 export MAKEFLAGS=-j8
-eval `gnome-keyring-daemon`
+# eval `gnome-keyring-daemon`
 
 #
 # Aliases

@@ -19,6 +19,7 @@
  '(display-time-mode t)
  '(flycheck-clang-include-path (quote ("/usr/lib/llvm-3.4/include")))
  '(inhibit-startup-screen t)
+ '(magit-git-executable "C:\\Program Files (x86)\\Git\\bin\\git.exe")
  '(read-file-name-completion-ignore-case t)
  '(scroll-bar-mode nil)
  '(show-paren-mode t)
