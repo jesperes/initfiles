@@ -14,6 +14,8 @@
  '(ansi-color-names-vector ["#242424" "#e5786d" "#95e454" "#cae682" "#8ac6f2" "#333366" "#ccaa8f" "#f6f3e8"])
  '(clang "clang")
  '(column-number-mode t)
+ '(compilation-auto-jump-to-first-error t)
+ '(compilation-scroll-output (quote first-error))
  '(custom-enabled-themes (quote (adwaita)))
  '(display-time-24hr-format t)
  '(display-time-mode t)

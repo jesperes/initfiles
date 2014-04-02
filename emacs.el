@@ -67,7 +67,7 @@
 (line-number-mode t)
 (global-auto-revert-mode t)
 (ansi-color-for-comint-mode-on)
-(global-linum-mode t)
+;; (global-linum-mode t)
 
 ;; Use M-[ and M-] to navigate between errors
 (global-set-key "\M-]" 'next-error)
@@ -135,3 +135,14 @@
 ;; DOS mode
 (load "dos")
 (add-to-list 'auto-mode-alist '("\\.bat" . dos-mode))
+
+;;
+;; Uniquify
+(require 'uniquify)
+
+;;
+;; AUCTeX
+(load "auctex")
+(setq TeX-auto-save t)
+(setq TeX-parse-self t)
+(setq-default TeX-master nil)
