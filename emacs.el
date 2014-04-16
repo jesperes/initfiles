@@ -17,6 +17,7 @@
       (t
        (error "Cannot find initfiles directory.")))
 
+
 ;;
 ;; Use separate custom files for Windows and Linux.
 (cond
@@ -83,6 +84,10 @@
 ;;
 ;; CMake
 (load "cmake-init")
+
+;;
+;; Erlang
+(require 'erlang-start)
 
 ;;
 ;; Clang auto-format
