@@ -119,6 +119,14 @@
 (add-hook 'ruby-mode-hook 'flymake-ruby-load)
 
 ;;
+;; nXML hook to make indentation work like Eclipse XML editors do by
+;; default.
+(add-hook 'nxml-mode-hook 
+	  (lambda ()
+	    (setq nxml-child-indent 4)
+	    (setq tab-width 4)))
+
+;;
 ;; Frame title
 (setq frame-title-format (format "%%b - Emacs (%s)" system-type))
 

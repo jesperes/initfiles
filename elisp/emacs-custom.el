@@ -21,6 +21,8 @@
  '(display-time-mode t)
  '(flycheck-clang-include-path (quote ("/usr/lib/llvm-3.4/include")))
  '(inhibit-startup-screen t)
+ '(nxml-child-indent 4)
+ '(nxml-slash-auto-complete-flag t)
  '(read-file-name-completion-ignore-case t)
  '(scroll-bar-mode nil)
  '(show-paren-mode t)
