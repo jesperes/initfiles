@@ -119,6 +119,16 @@
 (add-to-list 'auto-mode-alist '("\\.irpspec$" . yaml-mode))
 
 ;;
+;; Load IAR C/C++ formatting styles
+(load "iar-init")
+
+;;
+;; Jump to source
+(add-hook 'c-mode-common-hook
+  (lambda() 
+    (local-set-key  (kbd "C-x y") 'ff-find-other-file)))
+
+;;
 ;; Flymake ruby/yaml
 (add-hook 'yaml-mode-hook 'flymake-yaml-load)
 (add-hook 'ruby-mode-hook 'flymake-ruby-load)
