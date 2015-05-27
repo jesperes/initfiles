@@ -33,6 +33,8 @@
 (require 'package)
 (setq package-list
       '(ack 
+	full-ack
+	auctex
 	cmake-mode
 	erlang 
 	flycheck 
@@ -119,6 +121,21 @@
 (add-to-list 'auto-mode-alist '("\\.irpspec$" . yaml-mode))
 
 ;;
+;; Line-numbers
+(add-hook 'c++-mode-hook 'nlinum-mode)
+(add-hook 'c-mode-hook 'nlinum-mode)
+(add-hook 'ruby-mode-hook 'nlinum-mode)
+(add-hook 'erlang-mode-hook 'nlinum-mode)
+(add-hook 'nxml-mode-hook 'nlinum-mode)
+(add-hook 'js-mode-hook 'nlinum-mode)
+
+;;
+;; No tabs in Javascript
+(add-hook 'js-mode-hook
+	  (lambda ()
+	    (setq indent-tabs-mode nil)))
+
+;;
 ;; Load IAR C/C++ formatting styles
 (load "iar-init")
 
@@ -165,7 +182,24 @@
 
 ;;
 ;; AUCTeX
-(load "auctex")
+;; (require 'auctex)
 (setq TeX-auto-save t)
 (setq TeX-parse-self t)
 (setq-default TeX-master nil)
+
+;;
+;; dsvn
+(autoload 'svn-status "dsvn" "Run `svn status'." t)
+(autoload 'svn-update "dsvn" "Run `svn update'." t)
+(require 'vc-svn)
+
+;;
+;; full-ack
+(autoload 'ack-same "full-ack" nil t)
+(autoload 'ack "full-ack" nil t)
+(autoload 'ack-find-same-file "full-ack" nil t)
+(autoload 'ack-find-file "full-ack" nil t)
+
+;;
+;; Windmove
+(windmove-default-keybindings)
