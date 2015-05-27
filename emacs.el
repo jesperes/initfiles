@@ -33,24 +33,26 @@
 (require 'package)
 (setq package-list
       '(ack 
-	cmake-mode
-	erlang 
-	flycheck 
-	flymake-ruby
-	flymake-yaml
-	git-commit-mode 
-	git-rebase-mode 
-	google-this 
-	magit 
-	magit-filenotify 
-	magit-find-file
-	magit-log-edit
-	magit-svn
+	;; cmake-mode
+	;; erlang 
+	;;flycheck 
+	;;flymake-ruby
+	;;flymake-yaml
+	;;git-commit-mode 
+	;;git-rebase-mode 
+	;;google-this 
+	;;magit 
+	;;magit-filenotify 
+	;;magit-find-file
+	;;magit-log-edit
+	;;magit-svn
 	nlinum
-	yaml-mode)) 
-(setq package-archives '(("gnu" . "http://elpa.gnu.org/packages/")
-                         ("marmalade" . "http://marmalade-repo.org/packages/")
-                         ("melpa" . "http://melpa.milkbox.net/packages/")))
+	;;yaml-mode
+	)) 
+;(setq package-archives '(("gnu" . "http://elpa.gnu.org/packages/")
+;                         ("marmalade" . "http://marmalade-repo.org/packages/")
+;                         ("melpa" . "http://melpa.milkbox.net/packages/")))
+
 (package-initialize)
 (when (not package-archive-contents)
   (package-refresh-contents))
@@ -87,7 +89,7 @@
 
 ;;
 ;; Erlang
-(require 'erlang-start)
+;;(require 'erlang-start)
 
 ;;
 ;; Clang auto-format
@@ -165,7 +167,7 @@
 
 ;;
 ;; AUCTeX
-(load "auctex")
-(setq TeX-auto-save t)
-(setq TeX-parse-self t)
-(setq-default TeX-master nil)
+;(load "auctex")
+;(setq TeX-auto-save t)
+;(setq TeX-parse-self t)
+;(setq-default TeX-master nil)
