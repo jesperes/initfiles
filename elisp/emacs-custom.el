@@ -1,29 +1,34 @@
-
-(custom-set-faces
- ;; custom-set-faces was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
- '(default ((t (:family "Ubuntu Mono" :foundry "unknown" :slant normal :weight normal :height 113 :width normal))))
- '(header-line ((t (:inherit mode-line :background "gainsboro" :foreground "dark green" :box nil)))))
 (custom-set-variables
  ;; custom-set-variables was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
- '(ansi-color-names-vector ["#242424" "#e5786d" "#95e454" "#cae682" "#8ac6f2" "#333366" "#ccaa8f" "#f6f3e8"])
- '(clang "clang")
+ '(Man-fontify-manpage-flag t)
+ '(Man-notify-method (quote aggressive))
+ '(ack-executable "/usr/bin/ack-grep")
+ '(ack-prompt-for-directory t)
  '(column-number-mode t)
+ '(compilation-always-kill t)
+ '(compilation-ask-about-save nil)
  '(compilation-auto-jump-to-first-error t)
  '(compilation-scroll-output (quote first-error))
- '(custom-enabled-themes (quote (deeper-blue)))
+ '(compile-command "cmake --build .")
  '(display-time-24hr-format t)
  '(display-time-mode t)
- '(flycheck-clang-include-path (quote ("/usr/lib/llvm-3.4/include")))
  '(inhibit-startup-screen t)
  '(nxml-child-indent 4)
  '(nxml-slash-auto-complete-flag t)
  '(read-file-name-completion-ignore-case t)
  '(scroll-bar-mode nil)
  '(show-paren-mode t)
- '(tool-bar-mode nil))
+ '(speedbar-indentation-width 3 t)
+ '(speedbar-track-mouse-flag t)
+ '(split-height-threshold nil)
+ '(tool-bar-mode nil)
+ '(transient-mark-mode (quote (only . t))))
+(custom-set-faces
+ ;; custom-set-faces was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ '(default ((t (:family "Ubuntu Mono" :foundry "unknown" :slant normal :weight normal :height 98 :width normal)))))
