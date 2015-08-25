@@ -53,9 +53,10 @@
 	nlinum
 	yaml-mode
 	))
-(setq package-archives '(("gnu" . "http://elpa.gnu.org/packages/")
-                         ("marmalade" . "http://marmalade-repo.org/packages/")
-                         ("melpa" . "http://melpa.milkbox.net/packages/")))
+;;;(setq package-archives '(("gnu" . "http://elpa.gnu.org/packages/")
+;;;                         ("marmalade" . "http://marmalade-repo.org/packages/")
+;;;                         ("melpa" . "http://melpa.milkbox.net/packages/")))
+
 (package-initialize)
 (when (not package-archive-contents)
   (package-refresh-contents))
@@ -92,7 +93,7 @@
 
 ;;
 ;; Erlang
-(require 'erlang-start)
+;;(require 'erlang-start)
 
 ;;
 ;; Clang auto-format
@@ -185,10 +186,10 @@
 
 ;;
 ;; AUCTeX
-;; (require 'auctex)
-(setq TeX-auto-save t)
-(setq TeX-parse-self t)
-(setq-default TeX-master nil)
+;(load "auctex")
+;(setq TeX-auto-save t)
+;(setq TeX-parse-self t)
+;(setq-default TeX-master nil)
 
 ;;
 ;; dsvn
@@ -198,10 +199,10 @@
 
 ;;
 ;; full-ack
-(autoload 'ack-same "full-ack" nil t)
-(autoload 'ack "full-ack" nil t)
-(autoload 'ack-find-same-file "full-ack" nil t)
-(autoload 'ack-find-file "full-ack" nil t)
+;(autoload 'ack-same "full-ack" nil t)
+;(autoload 'ack "full-ack" nil t)
+;(autoload 'ack-find-same-file "full-ack" nil t)
+;(autoload 'ack-find-file "full-ack" nil t)
 
 ;;
 ;; Windmove
