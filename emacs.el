@@ -32,24 +32,27 @@
 
 (require 'package)
 (setq package-list
-      '(ack 
-	full-ack
+      '(
+	ack
 	auctex
 	cmake-mode
-	erlang 
-	flycheck 
+	erlang
+	fill-column-indicator
+	flycheck
 	flymake-ruby
 	flymake-yaml
-	git-commit-mode 
-	git-rebase-mode 
-	google-this 
-	magit 
-	magit-filenotify 
+	full-ack
+	git-commit-mode
+	git-rebase-mode
+	google-this
+	magit
+	magit-filenotify
 	magit-find-file
 	magit-log-edit
 	magit-svn
 	nlinum
-	yaml-mode)) 
+	yaml-mode
+	))
 (setq package-archives '(("gnu" . "http://elpa.gnu.org/packages/")
                          ("marmalade" . "http://marmalade-repo.org/packages/")
                          ("melpa" . "http://melpa.milkbox.net/packages/")))
@@ -99,8 +102,8 @@
 (defun clang-format-before-save ()
   (interactive)
   (when (or
-	 (eq major-mode 'c++-mode) 
-	 (eq major-mode 'c-mode)) 
+	 (eq major-mode 'c++-mode)
+	 (eq major-mode 'c-mode))
     (clang-format-buffer)))
 
 ;;
@@ -142,7 +145,7 @@
 ;;
 ;; Jump to source
 (add-hook 'c-mode-common-hook
-  (lambda() 
+  (lambda()
     (local-set-key  (kbd "C-x y") 'ff-find-other-file)))
 
 ;;
@@ -153,7 +156,7 @@
 ;;
 ;; nXML hook to make indentation work like Eclipse XML editors do by
 ;; default.
-(add-hook 'nxml-mode-hook 
+(add-hook 'nxml-mode-hook
 	  (lambda ()
 	    (setq nxml-child-indent 4)
 	    (setq tab-width 4)))
@@ -203,3 +206,18 @@
 ;;
 ;; Windmove
 (windmove-default-keybindings)
+
+;;
+;; Fill column indicator
+(require 'fill-column-indicator)
+(add-hook 'c-mode-hook 'fci-mode)
+(add-hook 'c++-mode-hook 'fci-mode)
+(add-hook 'ruby-mode-hook 'fci-mode)
+
+;;
+;; Always use y or n
+(defalias 'yes-or-no-p 'y-or-n-p)
+
+;;
+;; Show trailing whitespace
+(setq whitespace-style '(face trailing))
