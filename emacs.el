@@ -42,25 +42,25 @@
 	flymake-ruby
 	flymake-yaml
 	full-ack
-	git-commit-mode
-	git-rebase-mode
+	;; git-commit-mode
+	;; 	git-rebase-mode
 	google-this
 	magit
 	magit-filenotify
 	magit-find-file
-	magit-log-edit
+	;; magit-log-edit
 	magit-svn
 	nlinum
 	yaml-mode
 	))
-;;;(setq package-archives '(("gnu" . "http://elpa.gnu.org/packages/")
-;;;                         ("marmalade" . "http://marmalade-repo.org/packages/")
-;;;                         ("melpa" . "http://melpa.milkbox.net/packages/")))
+(setq package-archives
+      '(("gnu" . "http://elpa.gnu.org/packages/")
+	("marmalade" . "http://marmalade-repo.org/packages/")
+	("melpa" . "http://melpa.milkbox.net/packages/")))
 
 (package-initialize)
 (when (not package-archive-contents)
   (package-refresh-contents))
-
 (mapc (lambda (package)
 	(or (package-installed-p package)
 	    (package-install package)))
@@ -199,10 +199,10 @@
 
 ;;
 ;; full-ack
-;(autoload 'ack-same "full-ack" nil t)
-;(autoload 'ack "full-ack" nil t)
-;(autoload 'ack-find-same-file "full-ack" nil t)
-;(autoload 'ack-find-file "full-ack" nil t)
+(autoload 'ack-same "full-ack" nil t)
+(autoload 'ack "full-ack" nil t)
+(autoload 'ack-find-same-file "full-ack" nil t)
+(autoload 'ack-find-file "full-ack" nil t)
 
 ;;
 ;; Windmove
