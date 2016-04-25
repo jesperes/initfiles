@@ -43,7 +43,7 @@
 	flymake-yaml
 	full-ack
 	;; git-commit-mode
-	;; 	git-rebase-mode
+	;; git-rebase-mode
 	google-this
 	magit
 	magit-filenotify
@@ -53,10 +53,10 @@
 	nlinum
 	yaml-mode
 	))
-(setq package-archives
-      '(("gnu" . "http://elpa.gnu.org/packages/")
-	("marmalade" . "http://marmalade-repo.org/packages/")
-	("melpa" . "http://melpa.milkbox.net/packages/")))
+
+(setq package-archives '(("gnu" . "http://elpa.gnu.org/packages/")
+                         ("marmalade" . "https://marmalade-repo.org/packages/")
+                         ("melpa" . "http://melpa.org/packages/")))
 
 (package-initialize)
 (when (not package-archive-contents)
