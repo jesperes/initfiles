@@ -43,13 +43,13 @@
 	flymake-yaml
 	full-ack
 	;; git-commit-mode
-	;; 	git-rebase-mode
+	;; git-rebase-mode
 	google-this
 	magit
 	magit-filenotify
 	magit-find-file
 	;; magit-log-edit
-	magit-svn
+	;; magit-svn
 	nlinum
 	yaml-mode
 	))
@@ -84,8 +84,8 @@
 ;;
 ;; Magit
 (add-hook 'magit-mode-hook 'magit-load-config-extensions)
-(add-hook 'magit-mode-hook 'turn-on-magit-svn)
-(global-set-key (kbd "C-c p") 'magit-find-file-completing-read)
+(global-set-key (kbd "C-x g") 'magit-status)
+(add-hook 'magit-status-mode-hook 'magit-filenotify-mode)
 
 ;;
 ;; CMake
