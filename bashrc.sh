@@ -40,7 +40,7 @@ alias sweep='find -name \*~ -exec rm -v {} \;'
 # alias hemulen='rdesktop seupp-s-hemulen.ad.iar.com -d IARSYSTEMS -g 1280x1024'
 alias rdesktop='rdesktop -d IARSYSTEMS -u jesperes -x lan'
 
-alias mvn='/home/jesperes/Dropbox/colormvn'
+# alias mvn='/home/jesperes/Dropbox/colormvn'
 
 # Custom bash prompt via kirsle.net/wizards/ps1.html
 export PS1="\[$(tput bold)\]\[$(tput setaf 6)\]\t \[$(tput setaf 2)\][\[$(tput setaf 5)\]\u\[$(tput setaf 1)\]@\[$(tput setaf 4)\]\h \[$(tput setaf 6)\]\w\[$(tput setaf 2)\]]\[$(tput setaf 4)\]\\$ \[$(tput sgr0)\]"

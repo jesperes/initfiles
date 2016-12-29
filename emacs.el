@@ -49,9 +49,10 @@
 	magit-filenotify
 	magit-find-file
 	;; magit-log-edit
-	;; magit-svn
+	magit-svn
 	nlinum
 	yaml-mode
+	thrift
 	))
 
 (setq package-archives '(("gnu" . "http://elpa.gnu.org/packages/")
@@ -86,6 +87,7 @@
 (add-hook 'magit-mode-hook 'magit-load-config-extensions)
 (global-set-key (kbd "C-x g") 'magit-status)
 (add-hook 'magit-status-mode-hook 'magit-filenotify-mode)
+(add-hook 'magit-mode-hook 'magit-svn-mode)
 
 ;;
 ;; CMake
