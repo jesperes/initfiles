@@ -36,4 +36,4 @@ style "gtkcompactextra" {
 class "GtkButton" style "gtkcompactextra"
 class "GtkToolbar" style "gtkcompactextra"
 class "GtkPaned" style "gtkcompactextra"
-// widget "*swt*toolbar-flat" style "null"
+/* widget "*swt*toolbar-flat" style "null" */

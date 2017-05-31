@@ -95,7 +95,7 @@
 
 ;;
 ;; Erlang
-;;(require 'erlang-start)
+(require 'erlang-start)
 
 ;;
 ;; Clang auto-format
