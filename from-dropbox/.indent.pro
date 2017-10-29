@@ -1,0 +1,13 @@
+--braces-on-if-line
+--preserve-mtime
+--space-after-for
+--space-after-if
+--space-after-while
+--no-tabs
+--indent-level 3
+-bad
+-bap
+-sob
+-sc
+-ce
+-cdb
