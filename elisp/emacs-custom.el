@@ -29,8 +29,15 @@
  '(fci-rule-use-dashes t)
  '(fci-rule-width 1)
  '(inhibit-startup-screen t)
+ '(neo-smart-open t)
+ '(neo-theme (quote ascii))
+ '(neo-window-fixed-size nil)
+ '(neo-window-width 40)
  '(nxml-child-indent 4)
  '(nxml-slash-auto-complete-flag t)
+ '(package-selected-packages
+   (quote
+    (neotree dockerfile-mode markdown-mode go-autocomplete go-mode thrift yaml-mode nlinum magit-svn magit-find-file magit-filenotify google-this full-ack flymake-yaml flymake-ruby flycheck fill-column-indicator erlang cmake-mode auctex ack magit)))
  '(read-file-name-completion-ignore-case t)
  '(scroll-bar-mode nil)
  '(show-paren-mode t)

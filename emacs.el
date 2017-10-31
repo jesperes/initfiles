@@ -53,6 +53,8 @@
 	nlinum
 	yaml-mode
 	thrift
+	go-mode
+	neotree
 	))
 
 (setq package-archives '(("gnu" . "http://elpa.gnu.org/packages/")
@@ -128,12 +130,12 @@
 
 ;;
 ;; Line-numbers
-(add-hook 'c++-mode-hook 'nlinum-mode)
-(add-hook 'c-mode-hook 'nlinum-mode)
-(add-hook 'ruby-mode-hook 'nlinum-mode)
-(add-hook 'erlang-mode-hook 'nlinum-mode)
-(add-hook 'nxml-mode-hook 'nlinum-mode)
-(add-hook 'js-mode-hook 'nlinum-mode)
+;(add-hook 'c++-mode-hook 'nlinum-mode)
+;(add-hook 'c-mode-hook 'nlinum-mode)
+;(add-hook 'ruby-mode-hook 'nlinum-mode)
+;(add-hook 'erlang-mode-hook 'nlinum-mode)
+;(add-hook 'nxml-mode-hook 'nlinum-mode)
+;(add-hook 'js-mode-hook 'nlinum-mode)
 
 ;;
 ;; No tabs in Javascript
@@ -224,3 +226,14 @@
 ;;
 ;; Show trailing whitespace
 (setq whitespace-style '(face trailing))
+
+;;
+;; Go
+;(require 'go-mode)
+;(require 'go-autocomplete)
+;(require 'auto-complete-config)
+;(ac-config-default)
+;(define-key ac-mode-map (kbd "M-/") 'auto-complete)
+
+(add-to-list 'load-path "/directory/containing/neotree/")
+(require 'neotree)
