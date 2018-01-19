@@ -38,9 +38,9 @@
 	cmake-mode
 	erlang
 	fill-column-indicator
-	flycheck
-	flymake-ruby
-	flymake-yaml
+	;; flycheck
+	;; flymake-ruby
+	;; flymake-yaml
 	full-ack
 	;; git-commit-mode
 	;; git-rebase-mode
@@ -155,8 +155,8 @@
 
 ;;
 ;; Flymake ruby/yaml
-(add-hook 'yaml-mode-hook 'flymake-yaml-load)
-(add-hook 'ruby-mode-hook 'flymake-ruby-load)
+;(add-hook 'yaml-mode-hook 'flymake-yaml-load)
+;(add-hook 'ruby-mode-hook 'flymake-ruby-load)
 
 ;;
 ;; nXML hook to make indentation work like Eclipse XML editors do by
