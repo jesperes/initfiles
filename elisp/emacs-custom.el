@@ -19,7 +19,7 @@
  '(compilation-auto-jump-to-first-error nil)
  '(compilation-scroll-output (quote first-error))
  '(compile-command "cmake --build .")
- '(custom-enabled-themes nil)
+ '(custom-enabled-themes (quote (deeper-blue)))
  '(custom-safe-themes
    (quote
     ("f0ea6118d1414b24c2e4babdc8e252707727e7b4ff2e791129f240a2b3093e32" default)))
