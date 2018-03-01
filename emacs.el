@@ -40,6 +40,7 @@
 (line-number-mode t)
 (global-auto-revert-mode t)
 (ansi-color-for-comint-mode-on)
+(setq vc-follow-symlinks t)
 
 ;; Use M-[ and M-] to navigate between errors
 (global-set-key "\M-]" 'next-error)
