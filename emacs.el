@@ -48,10 +48,36 @@
 (global-set-key "\M-r" 'recompile)
 
 ;; Magit
+(use-package magit)
+(use-package magit-filenotify)
+(use-package magit-svn)
 (add-hook 'magit-mode-hook 'magit-load-config-extensions)
 (global-set-key (kbd "C-x g") 'magit-status)
 (add-hook 'magit-status-mode-hook 'magit-filenotify-mode)
 (add-hook 'magit-mode-hook 'magit-svn-mode)
+
+;; RTags
+(use-package rtags)
+(require 'rtags)
+(rtags-start-process-unless-running)
+(add-hook 'c-mode-hook 'rtags-start-process-unless-running)
+(add-hook 'c++-mode-hook 'rtags-start-process-unless-running)
+(add-hook 'objc-mode-hook 'rtags-start-process-unless-running)
+
+;; Company-mode
+(use-package company)
+(use-package company-cmake)
+(use-package company-c-headers)
+(use-package company-erlang)
+(use-package company-rtags)
+(add-hook 'after-init-hook 'global-company-mode)
+(setq company-idle-delay 0)
+(setq company-backends (delete 'company-semantic company-backends))
+(add-to-list 'company-backends 'company-c-headers)
+(add-to-list 'company-backends 'company-rtags)
+
+(global-set-key (kbd "M-/") 'company-complete)
+(global-set-key (quote [f3]) 'rtags-find-symbol-at-point)
 
 ;; CMake
 (use-package cmake-mode)

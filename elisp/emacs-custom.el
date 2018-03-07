@@ -14,6 +14,11 @@
  '(ansi-color-names-vector
    ["#212526" "#ff4b4b" "#b4fa70" "#fce94f" "#729fcf" "#e090d7" "#8cc4ff" "#eeeeec"])
  '(column-number-mode t)
+ '(company-backends
+   (quote
+    (company-c-headers company-bbdb company-nxml company-css company-eclim company-clang company-xcode company-cmake company-capf company-files
+		       (company-dabbrev-code company-gtags company-etags company-keywords)
+		       company-oddmuse company-dabbrev)))
  '(compilation-always-kill t)
  '(compilation-ask-about-save nil)
  '(compilation-auto-jump-to-first-error nil)
@@ -28,6 +33,10 @@
  '(fci-rule-color "gray23")
  '(fci-rule-use-dashes t)
  '(fci-rule-width 1)
+ '(grep-command "rg --no-heading")
+ '(grep-find-command
+   (quote
+    ("find . -type f -exec grep --color -nH -e  {} +" . 42)))
  '(inhibit-startup-screen t)
  '(neo-smart-open t)
  '(neo-theme (quote ascii))
