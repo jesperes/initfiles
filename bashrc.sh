@@ -26,6 +26,10 @@ export SVN_EDITOR=$EDITOR
 export GIT_EDITOR=$EDITOR
 export MAKEFLAGS=-j8
 
+#
+# Use ccache if installed
+export PATH=/usr/lib/ccache:$PATH
+
 alias ls='ls -l --color=auto'
 alias sweep='find -type f -name \*~ -exec rm -vf {} \;'
 
