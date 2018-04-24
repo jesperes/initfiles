@@ -5,10 +5,6 @@
  ;; If there is more than one, they won't work right.
  '(Man-fontify-manpage-flag t)
  '(Man-notify-method (quote aggressive))
- '(ack-context 0)
- '(ack-executable "/usr/bin/ack-grep")
- '(ack-heading nil)
- '(ack-prompt-for-directory t)
  '(ansi-color-faces-vector
    [default bold shadow italic underline bold bold-italic bold])
  '(ansi-color-names-vector
@@ -16,9 +12,8 @@
  '(column-number-mode t)
  '(company-backends
    (quote
-    (company-c-headers company-bbdb company-nxml company-css company-eclim company-clang company-xcode company-cmake company-capf company-files
-		       (company-dabbrev-code company-gtags company-etags company-keywords)
-		       company-oddmuse company-dabbrev)))
+    (company-rtags company-c-headers company-bbdb company-nxml company-css company-eclim company-clang company-xcode company-cmake company-capf company-files
+		   (company-dabbrev-code company-gtags company-etags company-keywords))))
  '(compilation-always-kill t)
  '(compilation-ask-about-save nil)
  '(compilation-auto-jump-to-first-error nil)
@@ -33,10 +28,6 @@
  '(fci-rule-color "gray23")
  '(fci-rule-use-dashes t)
  '(fci-rule-width 1)
- '(grep-command "rg --no-heading")
- '(grep-find-command
-   (quote
-    ("find . -type f -exec grep --color -nH -e  {} +" . 42)))
  '(inhibit-startup-screen t)
  '(neo-smart-open t)
  '(neo-theme (quote ascii))
@@ -80,4 +71,5 @@
  ;; If there is more than one, they won't work right.
  '(default ((t (:family "Ubuntu Mono" :foundry "DAMA" :slant normal :weight normal :height 98 :width normal))))
  '(font-latex-sectioning-5-face ((t (:inherit nil :foreground "blue4" :weight bold))))
- '(font-latex-slide-title-face ((t (:inherit font-lock-type-face :weight bold :height 1.2)))))
+ '(font-latex-slide-title-face ((t (:inherit font-lock-type-face :weight bold :height 1.2))))
+ '(rtags-skippedline ((t (:background "gray20")))))

@@ -56,6 +56,9 @@
 (add-hook 'magit-status-mode-hook 'magit-filenotify-mode)
 (add-hook 'magit-mode-hook 'magit-svn-mode)
 
+;; Thrift
+(use-package thrift)
+
 ;; RTags
 (use-package rtags)
 (require 'rtags)
@@ -68,7 +71,6 @@
 (use-package company)
 (use-package company-cmake)
 (use-package company-c-headers)
-(use-package company-erlang)
 (use-package company-rtags)
 (add-hook 'after-init-hook 'global-company-mode)
 (setq company-idle-delay 0)
@@ -76,8 +78,25 @@
 (add-to-list 'company-backends 'company-c-headers)
 (add-to-list 'company-backends 'company-rtags)
 
-(global-set-key (kbd "M-/") 'company-complete)
-(global-set-key (quote [f3]) 'rtags-find-symbol-at-point)
+;; clang-format
+(use-package clang-format)
+;;(global-set-key (kbd "C-c i") 'clang-format-region)
+(global-set-key (kbd "C-S-f") 'clang-format-buffer)
+
+(setq clang-format-style-option "llvm")
+(add-hook
+ 'c++-mode-hook
+ (lambda ()
+   (progn
+     ;; Mimic Eclipse bindings
+     (local-set-key (kbd "M-/") 'company-complete)
+     (local-set-key (quote [f3]) 'rtags-find-symbol-at-point)
+     (local-set-key (kbd "C-S-g") 'rtags-find-all-references-at-point)
+     (local-set-key (kbd "C-S-r") 'rtags-find-file))))
+
+(rtags-enable-standard-keybindings)
+(setq rtags-autostart-diagnostics t)
+(setq rtags-completions-enabled t)
 
 ;; CMake
 (use-package cmake-mode)
@@ -85,6 +104,7 @@
 
 ;; Erlang
 (use-package erlang)
+(use-package company-erlang)
 (require 'erlang-start)
 
 ;; Automatic modes
@@ -171,4 +191,14 @@
 (setq whitespace-style '(face trailing))
 
 ;; Neotree
-;; (use-package neotree)
+(use-package neotree)
+
+;; ripgrep
+(use-package rg)
+
+;; xkcd
+(use-package xkcd)
+
+;; Wanderlust
+;; (use-package wanderlust)
+(autoload 'wl "wl" "Wanderlust" t)
