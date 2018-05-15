@@ -37,7 +37,7 @@
  '(nxml-slash-auto-complete-flag t)
  '(package-selected-packages
    (quote
-    (nlinum yaml-mode ag groovy-mode dockerfile-mode markdown+ markdown-mode+ markdown markdown-mode xkcd rg neotree company-erlang erlang cmake-font-lock cmake-mode clang-format company-rtags company-c-headers company-cmake company rtags thrift magit-svn magit-filenotify magit use-package)))
+    (ivy-erlang-complete nlinum yaml-mode ag groovy-mode dockerfile-mode markdown+ markdown-mode+ markdown markdown-mode xkcd rg neotree company-erlang erlang cmake-font-lock cmake-mode clang-format company-rtags company-c-headers company-cmake company rtags thrift magit-svn magit-filenotify magit use-package)))
  '(read-file-name-completion-ignore-case t)
  '(safe-local-variable-values (quote ((allout-layout . t))))
  '(scroll-bar-mode nil)
