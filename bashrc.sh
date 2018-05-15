@@ -20,26 +20,37 @@ if [ -f $HOME/.bashrc_local ]; then
 fi
 
 #
+# Bash completion
+if [ -f /etc/bash_completion ]; then
+    . /etc/bash_completion
+fi
+
+#
 # Exported variables 
 export EDITOR=emacs
 export SVN_EDITOR=$EDITOR
 export GIT_EDITOR=$EDITOR
-export MAKEFLAGS=-j8
+export MAKEFLAGS=-j$((`nproc` * 15 / 10))
+
+#
+# Kred
+export ERL_INETRC=$HOME/.inetrc
 
 #
 # Use ccache if installed
 export PATH=/usr/lib/ccache:$PATH
 
+alias make='make -s'
 alias ls='ls -l --color=auto'
 alias sweep='find -type f -name \*~ -exec rm -vf {} \;'
 
 #
 # Git prompt
-if [ -d $HOME/.bash-git-prompt ]; then
+#if [ -d $HOME/.bash-git-prompt ]; then
     # GIT_PROMPT_ONLY_IN_REPO=1
-    source $HOME/.bash-git-prompt/gitprompt.sh 
-else
+    #source $HOME/.bash-git-prompt/gitprompt.sh 
+#else
     #
     # Interactive prompt.
     export PS1="\[$(tput bold)\]\[$(tput setaf 6)\]\t \[$(tput setaf 2)\][\[$(tput setaf 5)\]\u\[$(tput setaf 1)\]@\[$(tput setaf 4)\]\h \[$(tput setaf 6)\]\w\[$(tput setaf 2)\]]\[$(tput setaf 4)\]\\$ \[$(tput sgr0)\]"
-fi
+#fi

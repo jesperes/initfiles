@@ -1,3 +1,10 @@
+;;
+;; When setting up a new machine, clone the initfiles git repo and
+;; create a symlink $HOME/.emacs to this file.
+;;
+;; The first time, Emacs will spend quite a bit of time installing
+;; packages.
+;;
 
 ;; Set up initfiles-dir to point to the location of this directory.
 (setq initfiles-dir (file-name-directory (file-truename load-file-name)))
@@ -50,86 +57,31 @@
 ;; Magit
 (use-package magit)
 (use-package magit-filenotify)
-(use-package magit-svn)
 (add-hook 'magit-mode-hook 'magit-load-config-extensions)
 (global-set-key (kbd "C-x g") 'magit-status)
 (add-hook 'magit-status-mode-hook 'magit-filenotify-mode)
-(add-hook 'magit-mode-hook 'magit-svn-mode)
-
-;; Thrift
-(use-package thrift)
-
-;; RTags
-(use-package rtags)
-(require 'rtags)
-(rtags-start-process-unless-running)
-(add-hook 'c-mode-hook 'rtags-start-process-unless-running)
-(add-hook 'c++-mode-hook 'rtags-start-process-unless-running)
-(add-hook 'objc-mode-hook 'rtags-start-process-unless-running)
 
 ;; Company-mode
 (use-package company)
-(use-package company-cmake)
-(use-package company-c-headers)
-(use-package company-rtags)
 (add-hook 'after-init-hook 'global-company-mode)
 (setq company-idle-delay 0)
 (setq company-backends (delete 'company-semantic company-backends))
-(add-to-list 'company-backends 'company-c-headers)
-(add-to-list 'company-backends 'company-rtags)
-
-;; clang-format
-(use-package clang-format)
-;;(global-set-key (kbd "C-c i") 'clang-format-region)
-(global-set-key (kbd "C-S-f") 'clang-format-buffer)
-
-(setq clang-format-style-option "llvm")
-(add-hook
- 'c++-mode-hook
- (lambda ()
-   (progn
-     ;; Mimic Eclipse bindings
-     (local-set-key (kbd "M-/") 'company-complete)
-     (local-set-key (quote [f3]) 'rtags-find-symbol-at-point)
-     (local-set-key (kbd "C-S-g") 'rtags-find-all-references-at-point)
-     (local-set-key (kbd "C-S-r") 'rtags-find-file))))
-
-(rtags-enable-standard-keybindings)
-(setq rtags-autostart-diagnostics t)
-(setq rtags-completions-enabled t)
-
-;; CMake
-(use-package cmake-mode)
-(use-package cmake-font-lock)
 
 ;; Erlang
 (use-package erlang)
-(use-package company-erlang)
 (require 'erlang-start)
 
-;; Automatic modes
-(add-to-list 'auto-mode-alist '("\\.h$" . c++-mode))
-(add-to-list 'auto-mode-alist '("\\.CPP$" . c++-mode))
-(add-to-list 'auto-mode-alist '("\\.H$" . c++-mode))
-(add-to-list 'auto-mode-alist '("\\.rc$" . c++-mode))
-(add-to-list 'auto-mode-alist '("\\.yaml$" . yaml-mode))
-(add-to-list 'auto-mode-alist '("\\.irpspec$" . yaml-mode))
+(use-package ivy-erlang-complete)
+(require 'ivy-erlang-complete)
+(add-hook 'erlang-mode-hook #'ivy-erlang-complete-init)
+(add-hook 'after-save-hook #'ivy-erlang-complete-reparse)
+(setq ivy-erlang-complete-set-project-root "/home/jesperes/dev/kred")
 
 ;; Line-numbers
-;(add-hook 'c++-mode-hook 'nlinum-mode)
-;(add-hook 'c-mode-hook 'nlinum-mode)
-;(add-hook 'ruby-mode-hook 'nlinum-mode)
-;(add-hook 'erlang-mode-hook 'nlinum-mode)
-;(add-hook 'nxml-mode-hook 'nlinum-mode)
-;(add-hook 'js-mode-hook 'nlinum-mode)
+(add-hook 'erlang-mode-hook 'nlinum-mode)
 
-;; No tabs in Javascript
-(add-hook 'js-mode-hook
-	  (lambda ()
-	    (setq indent-tabs-mode nil)))
-
-;; Load IAR C/C++ formatting styles
-(load "iar-init")
+;; No tab indents
+(setq indent-tabs-mode nil)
 
 ;; Jump to source
 (add-hook 'c-mode-common-hook
@@ -146,49 +98,19 @@
 ;; Frame title
 (setq frame-title-format (format "%%b - Emacs (%s)" system-type))
 
-;; Make buffer names unique
-(setq uniquify-buffer-name-style 'post-forward-angle-brackets)
-
 ;; Show parenthesis
 (show-paren-mode 1)
 (setq show-paren-delay 0)
 
-;; DOS mode
-(load "dos")
-(add-to-list 'auto-mode-alist '("\\.bat" . dos-mode))
-
 ;; Uniquify
 (require 'uniquify)
-
-;; AUCTeX
-;; (use-package auctex)
-
-;; dsvn
-(autoload 'svn-status "dsvn" "Run `svn status'." t)
-(autoload 'svn-update "dsvn" "Run `svn update'." t)
-(require 'vc-svn)
-
-;; full-ack
-(autoload 'ack-same "full-ack" nil t)
-(autoload 'ack "full-ack" nil t)
-(autoload 'ack-find-same-file "full-ack" nil t)
-(autoload 'ack-find-file "full-ack" nil t)
+(setq uniquify-buffer-name-style 'post-forward-angle-brackets)
 
 ;; Windmove
 (windmove-default-keybindings)
 
-;; Fill column indicator
-;;(use-package fill-column-indicator)
-;;(add-hook 'c-mode-hook 'fci-mode)
-;;(add-hook 'c++-mode-hook 'fci-mode)
-;;(add-hook 'ruby-mode-hook 'fci-mode)
-;;(add-hook 'emacs-lisp-mode-hook 'fci-mode)
-
 ;; Always use y or n
 (defalias 'yes-or-no-p 'y-or-n-p)
-
-;; Show trailing whitespace
-(setq whitespace-style '(face trailing))
 
 ;; Neotree
 (use-package neotree)
@@ -199,6 +121,14 @@
 ;; xkcd
 (use-package xkcd)
 
-;; Wanderlust
-;; (use-package wanderlust)
-(autoload 'wl "wl" "Wanderlust" t)
+;; markdown
+(use-package markdown-mode)
+
+;; Silver Searcher (ag)
+(use-package ag)
+
+;; Highlight text beyond 80 columns
+(require 'whitespace)
+(setq whitespace-style '(face lines-tail))
+(setq whitespace-line-column 80)
+(global-whitespace-mode t)

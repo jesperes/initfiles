@@ -35,7 +35,11 @@
  '(neo-window-width 40)
  '(nxml-child-indent 4)
  '(nxml-slash-auto-complete-flag t)
+ '(package-selected-packages
+   (quote
+    (nlinum yaml-mode ag groovy-mode dockerfile-mode markdown+ markdown-mode+ markdown markdown-mode xkcd rg neotree company-erlang erlang cmake-font-lock cmake-mode clang-format company-rtags company-c-headers company-cmake company rtags thrift magit-svn magit-filenotify magit use-package)))
  '(read-file-name-completion-ignore-case t)
+ '(safe-local-variable-values (quote ((allout-layout . t))))
  '(scroll-bar-mode nil)
  '(show-paren-mode t)
  '(speedbar-indentation-width 3)
@@ -69,7 +73,8 @@
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
- '(default ((t (:family "Ubuntu Mono" :foundry "DAMA" :slant normal :weight normal :height 98 :width normal))))
+ '(default ((t (:family "Ubuntu Mono" :foundry "DAMA" :slant normal :weight normal :height 120 :width normal))))
  '(font-latex-sectioning-5-face ((t (:inherit nil :foreground "blue4" :weight bold))))
  '(font-latex-slide-title-face ((t (:inherit font-lock-type-face :weight bold :height 1.2))))
+ '(markdown-code-face ((t (:inherit nil))))
  '(rtags-skippedline ((t (:background "gray20")))))
