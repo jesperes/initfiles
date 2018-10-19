@@ -56,10 +56,10 @@
 
 ;; Magit
 (use-package magit)
-(use-package magit-filenotify)
+;; (use-package magit-filenotify)
 (add-hook 'magit-mode-hook 'magit-load-config-extensions)
 (global-set-key (kbd "C-x g") 'magit-status)
-(add-hook 'magit-status-mode-hook 'magit-filenotify-mode)
+;; (add-hook 'magit-status-mode-hook 'magit-filenotify-mode)
 
 ;; Company-mode
 (use-package company)
@@ -70,15 +70,18 @@
 ;; Erlang
 (use-package erlang)
 (require 'erlang-start)
+;; (setq erlang-root-dir "/home/jesperes/dev/otp/install")
+(setq inferior-erlang-machine "/home/jesperes/dev/otp-install/otp-19/bin/erl")
+;; (setq erlang-indent-level 2)
 
-(use-package ivy-erlang-complete)
-(require 'ivy-erlang-complete)
-(add-hook 'erlang-mode-hook #'ivy-erlang-complete-init)
-(add-hook 'after-save-hook #'ivy-erlang-complete-reparse)
-(setq ivy-erlang-complete-set-project-root "/home/jesperes/dev/kred")
+;(use-package ivy-erlang-complete)
+;(require 'ivy-erlang-complete)
+;(add-hook 'erlang-mode-hook #'ivy-erlang-complete-init)
+;(add-hook 'after-save-hook #'ivy-erlang-complete-reparse)
+;(setq ivy-erlang-complete-set-project-root "/home/jesperes/dev/kred")
 
 ;; Line-numbers
-(add-hook 'erlang-mode-hook 'nlinum-mode)
+;; (add-hook 'erlang-mode-hook 'nlinum-mode)
 
 ;; No tab indents
 (setq indent-tabs-mode nil)
@@ -115,12 +118,6 @@
 ;; Neotree
 (use-package neotree)
 
-;; ripgrep
-(use-package rg)
-
-;; xkcd
-(use-package xkcd)
-
 ;; markdown
 (use-package markdown-mode)
 
@@ -128,7 +125,25 @@
 (use-package ag)
 
 ;; Highlight text beyond 80 columns
-(require 'whitespace)
-(setq whitespace-style '(face lines-tail))
-(setq whitespace-line-column 80)
-(global-whitespace-mode t)
+;; (require 'whitespace)
+;; (setq whitespace-style
+;;       '(face
+;; 	;;tabs
+;; 	lines-tail
+;; 	;;space-after-tab
+;; 	;;space-before-tab
+;; 	))
+;; (setq whitespace-line-column 80)
+
+;(add-hook 'erlang-mode-hook 'whitespace-mode)
+;(add-hook 'emacs-mode-hook 'whitespace-mode)
+;(add-hook 'sh-mode-hook 'whitespace-mode)
+;(add-hook 'yaml-mode-hook 'whitespace-mode)
+
+;; Flycheck
+;; (use-package flycheck)
+;; (global-flycheck-mode t)
+
+;(add-hook 'after-init-hook 'my-after-init-hook)
+;(defun my-after-init-hook ()
+;  (require 'edts-start))
