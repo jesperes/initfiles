@@ -1,48 +1,32 @@
-;;
-;; When setting up a new machine, clone the initfiles git repo and
-;; create a symlink $HOME/.emacs to this file.
-;;
-;; The first time, Emacs will spend quite a bit of time installing
-;; packages.
-;;
+;;; emacs.el --- My .emacs
+;;; Commentary:
+;;; Code:
 
-;; Set up initfiles-dir to point to the location of this directory.
-(setq initfiles-dir (file-name-directory (file-truename load-file-name)))
-(message (format "Init files dir: %s" initfiles-dir))
-
-;; Use separate custom files for Windows and Linux.
-(cond
- ((eq window-system 'w32)
-  (setq custom-file-name "emacs-custom-win32.el"))
- (t
-  (setq custom-file-name "emacs-custom.el")))
-
-(setq custom-file (concat initfiles-dir "elisp/" custom-file-name))
+;; Keep custom-set-* in separate files
+(setq custom-file
+      (concat
+       (file-name-directory (file-truename load-file-name))
+       "elisp/emacs-custom.el"))
 (load custom-file)
 
-;; Put elisp dir into load-path
-(add-to-list
- 'load-path
- (concat initfiles-dir "elisp"))
-
+;; Initialize package management. When starting Emacs on a new machine
+;; (without a .emacs.d), this code does not work straight away, but
+;; requires a few restarts.
+; (setq gnutls-algorithm-priority "NORMAL:-VERS-TLS1.3")
 (require 'package)
-
+(add-to-list 'package-archives '("melpa" . "http://melpa.org/packages/"))
+(add-to-list 'package-archives '("elpa" . "http://elpa.gnu.org/packages/"))
+(setq package-check-signature nil)
 (package-initialize)
-(setq package-archives
-      '(("gnu" . "http://elpa.gnu.org/packages/")
-	("marmalade" . "https://marmalade-repo.org/packages/")
-	("melpa" . "http://melpa.org/packages/")))
 
 (unless (package-installed-p 'use-package)
   (package-refresh-contents)
   (package-install 'use-package))
-
 (require 'use-package)
-(setq use-package-always-ensure t)
 
 ;; Misc settings
-(setq x-select-enable-clipboard t)
-(setq x-select-enable-primary t)
+(setq select-enable-clipboard t)
+(setq select-enable-primary t)
 (column-number-mode t)
 (line-number-mode t)
 (global-auto-revert-mode t)
@@ -56,54 +40,110 @@
 
 ;; Magit
 (use-package magit)
-;; (use-package magit-filenotify)
 (add-hook 'magit-mode-hook 'magit-load-config-extensions)
 (global-set-key (kbd "C-x g") 'magit-status)
-;; (add-hook 'magit-status-mode-hook 'magit-filenotify-mode)
-
-;; Company-mode
-(use-package company)
-(add-hook 'after-init-hook 'global-company-mode)
-(setq company-idle-delay 0)
-(setq company-backends (delete 'company-semantic company-backends))
+(add-hook 'before-save-hook 'delete-trailing-whitespace)
+(add-hook 'magit-mode-hook (lambda () (magit-delta-mode +1)))
 
 ;; Erlang
 (use-package erlang)
-(require 'erlang-start)
-;; (setq erlang-root-dir "/home/jesperes/dev/otp/install")
-(setq inferior-erlang-machine "/home/jesperes/dev/otp-install/otp-19/bin/erl")
-;; (setq erlang-indent-level 2)
+(setq erlang-indent-level 2)
+(setq inferior-erlang-machine "erl")
+(setq erlang-skel-mail-address "jesper.eskilson@klarna.com")
+(add-to-list 'auto-mode-alist '("rebar\\.config.*" . erlang-mode))
+(add-to-list 'auto-mode-alist '(".*\\.eterm$" . erlang-mode))
+(add-to-list 'auto-mode-alist '("Emakefile" . erlang-mode))
+(add-hook 'erlang-mode-hook
+          (lambda () (local-set-key
+                      (kbd "<f1>")
+                      #'erlang-man-function-no-prompt)))
 
-;(use-package ivy-erlang-complete)
-;(require 'ivy-erlang-complete)
-;(add-hook 'erlang-mode-hook #'ivy-erlang-complete-init)
-;(add-hook 'after-save-hook #'ivy-erlang-complete-reparse)
-;(setq ivy-erlang-complete-set-project-root "/home/jesperes/dev/kred")
+;; -- LSP support --
 
-;; Line-numbers
-;; (add-hook 'erlang-mode-hook 'nlinum-mode)
+;; LSP performance tweaks
+(setq gc-cons-threshold 100000000)
+(setq read-process-output-max (* 1024 1024)) ;; 1mb
+
+(use-package spinner)
+(use-package lsp-mode)
+(use-package lsp-ui)
+(use-package lsp-treemacs)
+(use-package company)
+(use-package helm)
+(use-package helm-company)
+(use-package helm-lsp)
+;(use-package yasnippet)
+;(use-package yasnippet-snippets)
+
+; (yas-global-mode 1)
+
+;; For git branchs which have a jira-like ticket, insert the ticket id
+;; first in the commit message (if it is not already there).
+(add-hook
+ 'git-commit-setup-hook
+ (lambda ()
+   (let ((issue-key "[[:alpha:]]+-[[:digit:]]+")
+         (branch (magit-get-current-branch)))
+
+     ;; Do nothing if branch does not have an issue key
+     (when (string-match-p issue-key branch)
+
+       ;; Create commit-prefix by using the issue key in the branch
+       ;; name + trailing space
+       (let ((commit-prefix (replace-regexp-in-string
+                             (concat ".*?\\(" issue-key "\\).*")
+                             "\\1 "
+                             branch)))
+
+         ;; Insert commit prefix if it is not already there
+         ;; (e.g. amending will prefill the buffer with the last
+         ;; commit message)
+         (when (not (string-prefix-p commit-prefix (buffer-string)))
+           (insert commit-prefix))
+
+         ;; Move point to the first char in the actual commit message
+         (goto-char (+ (point-min)
+                       (string-width commit-prefix))))))))
+
+;; (setq lsp-log-io t)
+(setq lsp-ui-doc-enable t)
+(setq lsp-ui-doc-position 'bottom)
+(setq lsp-ui-sideline-enable t)
+(setq lsp-enable-snippet nil)
+; (setq company-lsp-enable-snippet t)
+(setq lsp-keymap-prefix "C-c l")
+(setq lsp-headerline-breadcrumb-enable t)
+
+(use-package company-quickhelp)
+; (company-quickhelp-mode)
+
+(add-hook 'erlang-mode-hook #'lsp)
+(add-hook 'c-mode-hook #'lsp)
+;(require 'lsp-groovy)
+;(add-hook 'groovy-mode-hook #'lsp)
+;(setq lsp-groovy-classpath ["/usr/share/groovy/lib"])
+
+(add-hook 'after-init-hook 'global-company-mode)
+
+(setq lsp-keymap-prefix "M-l")
+
+(global-set-key (kbd "M-/") 'company-complete)
+(global-set-key (kbd "<f3>") 'xref-find-definitions)
+(global-set-key (kbd "<f7>") 'ag)
+(global-set-key (kbd "S-<f7>") 'ag-regexp)
+(global-set-key (kbd "M-<left>") 'xref-pop-marker-stack)
+(global-set-key (kbd "C-S-g") 'xref-find-references)
+
+;; (global-set-key (kbd "C-S-g") 'lsp-treemacs-references)
+
+(use-package exec-path-from-shell)
+(exec-path-from-shell-initialize)
 
 ;; No tab indents
 (setq indent-tabs-mode nil)
 
-;; Jump to source
-(add-hook 'c-mode-common-hook
-  (lambda()
-    (local-set-key  (kbd "C-x y") 'ff-find-other-file)))
-
-;; nXML hook to make indentation work like Eclipse XML editors do by
-;; default.
-(add-hook 'nxml-mode-hook
-	  (lambda ()
-	    (setq nxml-child-indent 4)
-	    (setq tab-width 4)))
-
-;; Frame title
-(setq frame-title-format (format "%%b - Emacs (%s)" system-type))
-
 ;; Show parenthesis
 (show-paren-mode 1)
-(setq show-paren-delay 0)
 
 ;; Uniquify
 (require 'uniquify)
@@ -115,14 +155,15 @@
 ;; Always use y or n
 (defalias 'yes-or-no-p 'y-or-n-p)
 
-;; Neotree
-(use-package neotree)
-
-;; markdown
 (use-package markdown-mode)
-
-;; Silver Searcher (ag)
 (use-package ag)
+(use-package yaml-mode)
+(use-package groovy-mode)
+(use-package dockerfile-mode)
+
+;(use-package which-key
+;  :config
+;  (which-key-mode))
 
 ;; Highlight text beyond 80 columns
 ;; (require 'whitespace)
@@ -135,15 +176,111 @@
 ;; 	))
 ;; (setq whitespace-line-column 80)
 
-;(add-hook 'erlang-mode-hook 'whitespace-mode)
-;(add-hook 'emacs-mode-hook 'whitespace-mode)
-;(add-hook 'sh-mode-hook 'whitespace-mode)
-;(add-hook 'yaml-mode-hook 'whitespace-mode)
+;; (add-hook 'erlang-mode-hook 'whitespace-mode)
+;; (add-hook 'emacs-mode-hook 'whitespace-mode)
+;; (add-hook 'sh-mode-hook 'whitespace-mode)
+;; (add-hook 'yaml-mode-hook 'whitespace-mode)
+
+;; For font scaling C-{+,-}
+;; https://www.emacswiki.org/emacs/GlobalTextScaleMode
+(define-globalized-minor-mode
+  global-text-scale-mode
+  text-scale-mode
+  (lambda () (text-scale-mode 1)))
+
+(defun global-text-scale-adjust (inc)
+  "Adjust font size by INC."
+  (interactive)
+  (text-scale-set 1)
+  (kill-local-variable 'text-scale-mode-amount)
+  (setq-default text-scale-mode-amount (+ text-scale-mode-amount inc))
+  (global-text-scale-mode 1))
+
+(global-set-key (kbd "C-0")
+                '(lambda () (interactive)
+                   (global-text-scale-adjust (- text-scale-mode-amount))
+                   (global-text-scale-mode -1)))
+(global-set-key (kbd "C-+")
+                '(lambda () (interactive) (global-text-scale-adjust 0.5)))
+(global-set-key (kbd "C--")
+                '(lambda () (interactive) (global-text-scale-adjust -0.5)))
+
+;; Ido
+(use-package ido)
+(use-package ido-vertical-mode)
+(require 'ido-completing-read+)
+(require 'ido-vertical-mode)
+(setq ido-enable-flex-matching t)
+(setq ido-everywhere t)
+(ido-mode 1)
+(ido-vertical-mode 1)
+(ido-ubiquitous-mode 1)
+(setq ido-vertical-show-count t)
+(setq ido-vertical-define-keys 'C-n-C-p-up-and-down)
+
+;; This is the closest thing Emacs has to Eclipse "Find Resource...".
+(use-package find-file-in-project)
+(require 'find-file-in-project)
+(add-to-list 'ffip-prune-patterns "*/ct_run*")
+(add-to-list 'ffip-prune-patterns "*/logs")
+(add-to-list 'ffip-prune-patterns "*/build")
+(add-to-list 'ffip-prune-patterns "*/.jenkins")
+(add-to-list 'ffip-prune-patterns "*/system/db")
+(add-to-list 'ffip-prune-patterns "*/system/leveldb")
+(add-to-list 'ffip-prune-patterns "*/.eunit")
+(setq ffip-ignore-filenames '("*.beam" "*.o" "*~"))
+(global-set-key (kbd "C-S-r") 'find-file-in-project)
+
+(global-linum-mode t)
+
+(defun new-work-note ()
+  "Add a timestamped section to current buffer."
+  (interactive)
+  (insert (shell-command-to-string "printf \"## %s: \" \"$(date +'%F (%A %R)')\"")))
+(global-set-key (kbd "C-S-n") 'new-work-note)
+
+(setq split-height-threshold 1200)
+(setq split-width-threshold 2000)
+
+;; Rust
+;(use-package rust-mode)
+;(require 'rust-mode)
 
 ;; Flycheck
-;; (use-package flycheck)
-;; (global-flycheck-mode t)
+(use-package flycheck
+  :ensure t
+  :init (global-flycheck-mode))
 
-;(add-hook 'after-init-hook 'my-after-init-hook)
-;(defun my-after-init-hook ()
-;  (require 'edts-start))
+;; Always show diagnostics at the bottom, using 1/3 of the available space
+(add-to-list 'display-buffer-alist
+             `(,(rx bos "*Flycheck errors*" eos)
+              (display-buffer-reuse-window
+               display-buffer-in-side-window)
+              (side            . bottom)
+              (reusable-frames . visible)
+              (window-height   . 0.33)))
+
+(require 'ansi-color)
+
+;; .dot files
+(use-package graphviz-dot-mode :ensure t)
+
+;; LSP mode for Python
+(use-package lsp-python-ms
+  :ensure t
+  :init (setq lsp-python-ms-auto-install-server t)
+  :hook (python-mode . (lambda ()
+                          (require 'lsp-python-ms)
+                          (lsp))))  ; or lsp-deferred
+
+(setq lsp-python-ms-auto-install-server t)
+(add-hook 'python-mode-hook #'lsp) ; or lsp-deferred
+
+(provide 'emacs)
+
+(use-package vscode-dark-plus-theme
+  :ensure t
+  :config
+  (load-theme 'vscode-dark-plus t))
+
+;;; emacs.el ends here

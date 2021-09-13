@@ -1,4 +1,5 @@
-# 
+# shellcheck shell=bash disable=SC1090,SC1091
+#
 # Bash init file. Symlinked from $HOME/.bashrc.
 #
 
@@ -8,93 +9,77 @@
 shopt -s histappend
 shopt -s checkwinsize
 shopt -s cdspell
-if [ $BASH_VERSINFO[0] == 4 ]; then
+shopt -s extglob
+
+if [ "${BASH_VERSINFO[0]}" == 4 ]; then
     shopt -s dirspell
     shopt -s globstar
 fi
 
-#
-# Put local customizations in $HOME/.bashrc_local, like local PATH settings.
-if [ -f $HOME/.bashrc_local ]; then
-    . $HOME/.bashrc_local
+if [ -f "$HOME"/.bashrc_local ]; then
+    . "$HOME"/.bashrc_local
 fi
 
 #
-# lsb_release is included by default on Ubuntu, but needs package
-# "redhat-lsb-core" on Fedora-derivatives.
-DISTRO_NAME=`lsb_release -i -s`-`lsb_release -r -s`
-
-#
 # Bash completion, if available
-case $DISTRO_NAME in
-    Ubuntu*)
-        if [ -f /etc/bash_completion ]; then
-            . /etc/bash_completion
-        fi
-        ;;
-    Fedora*)
-        # skip bash completion on fedora until I can get it to work.
-        ;;
-    *)
-        ;;
-esac
+if [ -f /etc/bash_completion ]; then
+    . /etc/bash_completion
+fi
 
 #
-# Exported variables 
-export EDITOR=emacs
-export SVN_EDITOR=$EDITOR
-export GIT_EDITOR=$EDITOR
-export MAKEFLAGS="-j`nproc`"
+# Exported variables
+export EDITOR="emacs -nw -q"
+export GIT_EDITOR="$EDITOR"
+MAKEFLAGS="-j$(nproc) --output-sync=none"
+export MAKEFLAGS
 export ERL_AFLAGS="-kernel shell_history enabled"
-
-#
-# Kred
-export ERL_INETRC=$HOME/.inetrc
-# export PROGRESS='@echo $(@F) "<-" $^'
-
-#
-# Use ccache if installed
-export PATH=/usr/lib/ccache:$PATH
+export BROWSER="google-chrome %u"
 
 #
 # Aliases
-# alias make='make -s'
 alias ls='ls -l --color=auto'
 alias sweep='find -type f -name \*~ -exec rm -vf {} \;'
-alias vpnup='nmcli con up id Klarna'
-alias vpndown='nmcli con down id Klarna'
-alias make='nice make'
+alias cat='batcat'
+export MANPAGER="sh -c 'col -bx | batcat -l man -p'"
 
-source $HOME/dev/git/contrib/completion/git-prompt.sh
+# Keychain
+for key in id_rsa id_rsa_live; do
+    # echo $key
+    /usr/bin/keychain -q "$HOME"/.ssh/$key
+done
+source "$HOME/.keychain/$HOSTNAME-sh"
+source "$HOME/dev/git/contrib/completion/git-prompt.sh"
 
-#
-# Bash prompt
-#BOLD="\[`tput bold`\]"
-#FG1="\[`tput setaf 1`\]" # red
-#FG2="\[`tput setaf 2`\]" # green
-#FG3="\[`tput setaf 3`\]" # yellow
-#FG4="\[`tput setaf 4`\]" # blue
-#FG5="\[`tput setaf 5`\]" # purple
-#FG6="\[`tput setaf 6`\]" # cyan
-#SGR0="\[`tput sgr0`\]"   # clear formatting
-#PS1=""
-#PS1="$PS1$BOLD"     # entire prompt is bold
-#PS1="$PS1$FG6\t "   # time (cyan)
-#PS1="$PS1$FG2["     # '[' (green)
-#PS1="$PS1$FG5\u"    # username (purple)
-#PS1="$PS1$FG1@"     # '@' (red)
-#PS1="$PS1$FG4\h "    # hostname (blue)
-# PS1="$PS1$FG4$DISTRO_NAME " # distro name (yellow)
-#PS1="$PS1$FG6\w"    # path (cyan)
-#PS1="$PS1$FG2]"     # ']' (green)
-#PS1="$PS1$FG4\\$ "  # '$' (blue)
-#PS1="$PS1$SGR0"
+# kubectl autocompletion
+source <(kubectl completion bash)
 
-GIT_PROMPT_ONLY_IN_REPO=1
+# ------------------------------------------------------------
+# Git bash prompt
+# ------------------------------------------------------------
+
 GIT_PROMPT_SHOW_UNTRACKED_FILES=no
-GIT_PROMPT_FETCH_REMOTE_STATUS=1
+GIT_PROMPT_FETCH_REMOTE_STATUS=0
 GIT_PROMPT_IGNORE_SUBMODULES=1 # speeds up the prompt
-GIT_PROMPT_THEME=Single_line_Dark
+source "$HOME/dev/bash-git-prompt/gitprompt.sh"
 
-source ~/dev/bash-git-prompt/gitprompt.sh 
- 
+# ------------------------------------------------------------
+# AWS
+# ------------------------------------------------------------
+prompt_callback() {
+    if [[ -n $AWS_PROFILE ]] && [[ $AWS_SESSION_EXPIRATION_TIME -gt $(date +%s) ]]; then
+        echo -n "[$AWS_PROFILE ($(( ("$AWS_SESSION_EXPIRATION_TIME" - $(date -u +%s)) / 60)) min)]"
+    fi
+
+    kerl prompt
+}
+
+aws_menu () {
+    # 14400 seconds == 4 hours
+    DURATION=14400
+    mapfile -t ROLE_ARGS < <(aws-login-tool list-roles -u "$LDAP_USER" -m | peco)
+    echo "${ROLE_ARGS[@]}"
+    LOGIN_CMD=(aws-login-tool login "${ROLE_ARGS[@]}" -d "$DURATION" -u "$LDAP_USER")
+    eval $(${LOGIN_CMD[@]})
+}
+
+. "$HOME/.cargo/env"
