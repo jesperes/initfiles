@@ -11,7 +11,7 @@ shopt -s checkwinsize
 shopt -s cdspell
 shopt -s extglob
 
-if [ "${BASH_VERSINFO[0]}" == 4 ]; then
+if [ "${BASH_VERSINFO[0]}" -gt 4 ]; then
     shopt -s dirspell
     shopt -s globstar
 fi
@@ -35,51 +35,83 @@ export MAKEFLAGS
 export ERL_AFLAGS="-kernel shell_history enabled"
 export BROWSER="google-chrome %u"
 
+# See https://stackoverflow.com/questions/54833752/how-to-silence-paramiko-cryptographydeprecationwarnings-in-ansible
+export PYTHONWARNINGS=ignore::UserWarning
+export RUST_BACKTRACE=1
+
 #
 # Aliases
-alias ls='ls -l --color=auto'
+alias ls='exa -l'
+alias du='dust'
 alias sweep='find -type f -name \*~ -exec rm -vf {} \;'
 alias cat='batcat'
+
+upgrade() {
+
+    sudo apt update && \
+        sudo apt full-upgrade -y && \
+        sudo apt autoremove -y && \
+        python3 -m pip install -U aws-login-tool && \
+        python3 -m pip list --outdated
+}
+
 export MANPAGER="sh -c 'col -bx | batcat -l man -p'"
 
 # Keychain
-for key in id_rsa id_rsa_live; do
-    # echo $key
-    /usr/bin/keychain -q "$HOME"/.ssh/$key
+for key in id_rsa id_rsa_bitbucket ; do
+    echo $key
+    /usr/bin/keychain "$HOME"/.ssh/$key
 done
 source "$HOME/.keychain/$HOSTNAME-sh"
-source "$HOME/dev/git/contrib/completion/git-prompt.sh"
 
 # kubectl autocompletion
 source <(kubectl completion bash)
 
-# ------------------------------------------------------------
-# Git bash prompt
-# ------------------------------------------------------------
+export PGUSER=postgres
+export PGHOST=kred-ci-test-results.chmdfzrgmnrd.eu-west-1.rds.amazonaws.com
+export JIRA_USER=sys.kred.ci.jenkins
+export AWS_PROFILE=default
 
-GIT_PROMPT_SHOW_UNTRACKED_FILES=no
-GIT_PROMPT_FETCH_REMOTE_STATUS=0
-GIT_PROMPT_IGNORE_SUBMODULES=1 # speeds up the prompt
-source "$HOME/dev/bash-git-prompt/gitprompt.sh"
-
-# ------------------------------------------------------------
-# AWS
-# ------------------------------------------------------------
-prompt_callback() {
-    if [[ -n $AWS_PROFILE ]] && [[ $AWS_SESSION_EXPIRATION_TIME -gt $(date +%s) ]]; then
-        echo -n "[$AWS_PROFILE ($(( ("$AWS_SESSION_EXPIRATION_TIME" - $(date -u +%s)) / 60)) min)]"
-    fi
-
-    kerl prompt
+init_kred() {
+    lib/kdb/priv/remove_s3_mock.sh
+    lib/kdb/priv/create_s3_mock.sh
+    lib/pgsql_db/priv/remove_postgres.sh
+    lib/pgsql_db/priv/create_postgres.sh
+    export DB_URI="postgres://postgres:mysecretpassword@localhost:5432/kred"
+    bin/kred "${@}" -cluster_id 1 -n postgres
 }
 
 aws_menu () {
-    # 14400 seconds == 4 hours
-    DURATION=14400
-    mapfile -t ROLE_ARGS < <(aws-login-tool list-roles -u "$LDAP_USER" -m | peco)
-    echo "${ROLE_ARGS[@]}"
-    LOGIN_CMD=(aws-login-tool login "${ROLE_ARGS[@]}" -d "$DURATION" -u "$LDAP_USER")
-    eval $(${LOGIN_CMD[@]})
+    # -d 14400 means 4 hours, wich is the max allowed duration
+    eval $(aws-login-tool login $(aws-login-tool list-roles -u "$LDAP_USER" -m | peco) -d 14400 -u "$LDAP_USER")
+}
+
+aws_login() {
+    ROLE=iam-sync/kred/kred.IdP_core
+
+    case $1 in
+        production|live)
+            ACCOUNT=203244189820
+            ;;
+        nonprod*|staging)
+            ACCOUNT=466078361986
+            ;;
+        prod-internal|verif)
+            ACCOUNT=035412085684
+            ;;
+        *)
+            echo "Usage: aws_login [production|nonprod|prod-internal]"
+            exit 1
+            ;;
+    esac
+
+    eval $(aws-login-tool login -u "$LDAP_USER" -d 14400 -r $ROLE -a $ACCOUNT)
 }
 
 . "$HOME/.cargo/env"
+
+eval "$(starship init bash)"
+
+export NVM_DIR="$HOME/.nvm"
+[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
+[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion

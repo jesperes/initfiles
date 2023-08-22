@@ -3,6 +3,7 @@
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
+ '(Man-width 120)
  '(ansi-color-faces-vector
    [default default default italic underline success warning error])
  '(ansi-color-names-vector
@@ -15,6 +16,7 @@
  '(company-quickhelp-mode t)
  '(company-quickhelp-use-propertized-text t)
  '(company-show-numbers (quote (quote t)))
+ '(company-show-quick-access (quote (quote t)))
  '(compilation-always-kill t)
  '(compilation-ask-about-save nil)
  '(compilation-auto-jump-to-first-error nil)
@@ -51,7 +53,7 @@
  '(magit-refresh-verbose t)
  '(package-selected-packages
    (quote
-    (vscode-icon ivy-erlang-complete lsp-ui vscode-dark-plus-theme company-quickhelp ido-completing-read+ find-file-in-repository jq-mode lsp-python-ms flycheck-rust atom-dark-theme arc-dark-theme anti-zenburn-theme ample-theme ample-zen-theme afternoon-theme graphviz-dot-mode helm-lsp lsp-treemacs groovy-mode yasnippet-snippets magit-delta magit-filenotify magit-tbdiff magit-todos which-key company-lsp spinner company-capf flycheck rust-mode ido-vertical-mode find-file-in-project dockerfile-mode yaml-mode ag neotree exec-path-from-shell yasnippet helm-company helm company erlang magit use-package)))
+    (dap-mode lsp-mode vscode-icon ivy-erlang-complete lsp-ui vscode-dark-plus-theme company-quickhelp ido-completing-read+ find-file-in-repository jq-mode lsp-python-ms flycheck-rust atom-dark-theme arc-dark-theme anti-zenburn-theme ample-theme ample-zen-theme afternoon-theme graphviz-dot-mode helm-lsp lsp-treemacs groovy-mode yasnippet-snippets magit-delta magit-filenotify magit-tbdiff magit-todos which-key company-lsp spinner company-capf flycheck rust-mode ido-vertical-mode find-file-in-project dockerfile-mode yaml-mode ag neotree exec-path-from-shell yasnippet helm-company helm company erlang magit use-package)))
  '(read-file-name-completion-ignore-case t)
  '(ring-bell-function (quote ignore))
  '(safe-local-variable-values (quote ((allout-mode . t) (allout-layout . t))))
@@ -65,10 +67,8 @@
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
- '(default ((t (:inherit nil :extend nil :stipple nil :inverse-video nil :box nil :strike-through nil :overline nil :underline nil :slant normal :weight normal :height 90 :width normal :foundry "DAMA" :family "Ubuntu Mono"))))
+ '(default ((t (:family "Noto Mono" :foundry "GOOG" :slant normal :weight normal :height 83 :width normal))))
  '(erlang-font-lock-exported-function-name-face ((t (:inherit font-lock-function-name-face :weight bold))))
- '(flycheck-error ((t (:background "OrangeRed4"))))
- '(flycheck-warning ((t (:background "DarkOrange4"))))
  '(fringe ((t nil)))
  '(lsp-ui-doc-url ((t (:inherit nil))))
  '(lsp-ui-sideline-code-action ((t (:foreground "dim gray" :slant oblique))))

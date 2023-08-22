@@ -52,6 +52,7 @@
 (setq erlang-skel-mail-address "jesper.eskilson@klarna.com")
 (add-to-list 'auto-mode-alist '("rebar\\.config.*" . erlang-mode))
 (add-to-list 'auto-mode-alist '(".*\\.eterm$" . erlang-mode))
+(add-to-list 'auto-mode-alist '(".*sys\\.config.*$" . erlang-mode))
 (add-to-list 'auto-mode-alist '("Emakefile" . erlang-mode))
 (add-hook 'erlang-mode-hook
           (lambda () (local-set-key
@@ -108,11 +109,21 @@
 ;; (setq lsp-log-io t)
 (setq lsp-ui-doc-enable t)
 (setq lsp-ui-doc-position 'bottom)
-(setq lsp-ui-sideline-enable t)
+(setq lsp-ui-sideline-enable nil)
 (setq lsp-enable-snippet nil)
-; (setq company-lsp-enable-snippet t)
+;; (setq company-lsp-enable-snippet t)
+(setq lsp-enable-file-watchers nil)
 (setq lsp-keymap-prefix "C-c l")
 (setq lsp-headerline-breadcrumb-enable t)
+
+(use-package dap-mode)
+(use-package dap-erlang)
+(dap-ui-mode 1)
+(dap-tooltip-mode 1)
+(dap-ui-controls-mode 1)
+
+(setq dap-auto-configure-features '(sessions locals controls tooltip))
+
 
 (use-package company-quickhelp)
 ; (company-quickhelp-mode)
@@ -161,6 +172,8 @@
 (use-package groovy-mode)
 (use-package dockerfile-mode)
 
+(setq groovy-indent-offset 4)
+
 ;(use-package which-key
 ;  :config
 ;  (which-key-mode))
@@ -169,12 +182,12 @@
 ;; (require 'whitespace)
 ;; (setq whitespace-style
 ;;       '(face
-;; 	;;tabs
-;; 	lines-tail
-;; 	;;space-after-tab
-;; 	;;space-before-tab
-;; 	))
-;; (setq whitespace-line-column 80)
+;;  	;;tabs
+;;  	lines-tail
+;;  	;;space-after-tab
+;;  	;;space-before-tab
+;;  	))
+;; (setq whitespace-line-column 100)
 
 ;; (add-hook 'erlang-mode-hook 'whitespace-mode)
 ;; (add-hook 'emacs-mode-hook 'whitespace-mode)
@@ -224,6 +237,7 @@
 (add-to-list 'ffip-prune-patterns "*/ct_run*")
 (add-to-list 'ffip-prune-patterns "*/logs")
 (add-to-list 'ffip-prune-patterns "*/build")
+(add-to-list 'ffip-prune-patterns "*/_build")
 (add-to-list 'ffip-prune-patterns "*/.jenkins")
 (add-to-list 'ffip-prune-patterns "*/system/db")
 (add-to-list 'ffip-prune-patterns "*/system/leveldb")
@@ -282,5 +296,8 @@
   :ensure t
   :config
   (load-theme 'vscode-dark-plus t))
+
+(setq sh-basic-offset 4)
+(setq groovy-indent-offset 4)
 
 ;;; emacs.el ends here
