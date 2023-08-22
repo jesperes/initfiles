@@ -47,12 +47,7 @@ alias sweep='find -type f -name \*~ -exec rm -vf {} \;'
 alias cat='batcat'
 
 upgrade() {
-
-    sudo apt update && \
-        sudo apt full-upgrade -y && \
-        sudo apt autoremove -y && \
-        python3 -m pip install -U aws-login-tool && \
-        python3 -m pip list --outdated
+    cd "$HOME"/initfiles/ansible && make
 }
 
 export MANPAGER="sh -c 'col -bx | batcat -l man -p'"
