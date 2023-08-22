@@ -1,0 +1,10 @@
+---
+- name: Update pip # noqa: package-latest
+  pip:
+    name: pip
+    state: latest
+
+- name: Update pip packages # noqa: package-latest
+  pip:
+    name: "{{ python_packages }}"
+    state: latest

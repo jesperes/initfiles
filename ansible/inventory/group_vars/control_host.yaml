@@ -1,0 +1,4 @@
+python_packages:
+  - ansible
+  - ansible-lint
+  - aws-login-tool

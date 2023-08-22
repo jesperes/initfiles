@@ -1,0 +1,15 @@
+---
+
+- name: Check if VPN is up
+  register: vpn_state
+  changed_when: false
+  shell:
+    executable: /bin/bash
+    cmd: |
+      set -o pipefail
+      nmcli con show id {{ vpn_connection_name }} | grep GENERAL.STATE | awk '{print $2}'
+
+- name: Connect VPN (if necessary)
+  when: vpn_state.stdout != 'activated'
+  shell: |
+    nmcli con up id {{ vpn_connection_name }}
