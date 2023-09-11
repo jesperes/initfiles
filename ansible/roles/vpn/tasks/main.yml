@@ -3,6 +3,7 @@
 - name: Check if VPN is up
   register: vpn_state
   changed_when: false
+  failed_when: false
   shell:
     executable: /bin/bash
     cmd: |
@@ -11,5 +12,6 @@
 
 - name: Connect VPN (if necessary)
   when: vpn_state.stdout != 'activated'
+  changed_when: vpn_state.rc != 0
   shell: |
     nmcli con up id {{ vpn_connection_name }}

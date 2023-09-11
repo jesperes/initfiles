@@ -1,2 +1,5 @@
+lint:
+	ansible-lint
+
 all:
-	ansible-playbook -vv --ask-become-pass -i inventory/local.yaml playbooks/update.yaml
+	ansible-playbook -v --ask-become-pass -i inventory/local.yaml playbooks/update.yaml

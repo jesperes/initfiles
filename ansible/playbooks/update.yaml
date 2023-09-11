@@ -1,6 +1,7 @@
-- hosts: control_host
+- name: Update system
+  hosts: control_host
   gather_facts: false
   roles:
     - vpn
-    # - apt-update
-    - pip-update
+    - apt_update
+    - pip_update

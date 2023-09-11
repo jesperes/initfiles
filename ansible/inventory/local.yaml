@@ -1,6 +1,6 @@
-
 control_host:
   hosts:
     localhost:
   vars:
     ansible_connection: local
+    ansible_python_interpreter: /usr/bin/python3.9

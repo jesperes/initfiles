@@ -41,8 +41,7 @@ export RUST_BACKTRACE=1
 
 #
 # Aliases
-alias ls='exa -l'
-alias du='dust'
+alias ls='ls -l --color'
 alias sweep='find -type f -name \*~ -exec rm -vf {} \;'
 alias cat='batcat'
 
@@ -78,6 +77,7 @@ init_kred() {
 
 aws_menu () {
     # -d 14400 means 4 hours, wich is the max allowed duration
+    # shellcheck disable=SC2046
     eval $(aws-login-tool login $(aws-login-tool list-roles -u "$LDAP_USER" -m | peco) -d 14400 -u "$LDAP_USER")
 }
 
@@ -100,6 +100,7 @@ aws_login() {
             ;;
     esac
 
+    # shellcheck disable=SC2046
     eval $(aws-login-tool login -u "$LDAP_USER" -d 14400 -r $ROLE -a $ACCOUNT)
 }
 

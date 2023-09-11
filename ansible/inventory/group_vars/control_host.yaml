@@ -1,4 +1,6 @@
 python_packages:
   - ansible
-  - ansible-lint
+  - ansible-lint>=6.18.*
   - aws-login-tool
+  - tabulate
+  - psycopg2-binary
