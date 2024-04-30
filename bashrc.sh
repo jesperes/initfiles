@@ -20,6 +20,10 @@ if [ -f "$HOME"/.bashrc_local ]; then
     . "$HOME"/.bashrc_local
 fi
 
+if [ -f "$HOME"/.bash_profile ]; then
+    . "$HOME"/.bash_profile
+fi
+
 #
 # Bash completion, if available
 if [ -f /etc/bash_completion ]; then
@@ -28,7 +32,7 @@ fi
 
 #
 # Exported variables
-export EDITOR="emacs -nw -q"
+export EDITOR="emacs -nw"
 export GIT_EDITOR="$EDITOR"
 MAKEFLAGS="-j$(nproc) --output-sync=none"
 export MAKEFLAGS
@@ -46,10 +50,10 @@ alias sweep='find -type f -name \*~ -exec rm -vf {} \;'
 alias cat='batcat'
 
 upgrade() {
-    cd "$HOME"/initfiles/ansible && make
+    make -C "$HOME"/initfiles/ansible upgrade
 }
 
-export MANPAGER="sh -c 'col -bx | batcat -l man -p'"
+# export MANPAGER="sh -c 'col -bx | batcat --terminal-width=100 -l man -p'"
 
 # Keychain
 for key in id_rsa id_rsa_bitbucket ; do
@@ -72,7 +76,7 @@ init_kred() {
     lib/pgsql_db/priv/remove_postgres.sh
     lib/pgsql_db/priv/create_postgres.sh
     export DB_URI="postgres://postgres:mysecretpassword@localhost:5432/kred"
-    bin/kred "${@}" -cluster_id 1 -n postgres
+    bin/kred "${@}" -n postgres
 }
 
 aws_menu () {
@@ -111,3 +115,31 @@ eval "$(starship init bash)"
 export NVM_DIR="$HOME/.nvm"
 [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
 [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
+###-begin-grond-completions-###
+#
+# yargs command completion script
+#
+# Installation: grond completion >> ~/.bashrc
+#    or grond completion >> ~/.bash_profile on OSX.
+#
+_yargs_completions()
+{
+    local cur_word args type_list
+
+    cur_word="${COMP_WORDS[COMP_CWORD]}"
+    args=("${COMP_WORDS[@]}")
+
+    # ask yargs to generate completions.
+    type_list=$(grond --get-yargs-completions "${args[@]}")
+
+    COMPREPLY=( $(compgen -W "${type_list}" -- ${cur_word}) )
+
+    # if no match was found, fall back to filename completion
+    if [ ${#COMPREPLY[@]} -eq 0 ]; then
+      COMPREPLY=()
+    fi
+
+    return 0
+}
+complete -o default -F _yargs_completions grond
+###-end-grond-completions-###
